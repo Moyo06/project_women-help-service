@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DVHL - Domestic Violence Helpline Locator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>DVHL</h1>
+        <p>Domestic Violence Helpline Locator</p>
+    </header>
+
+    <main>
+        <section id="intro">
+            <h2>Find help centers near you or send an SOS alert in emergencies.</h2>
+        </section>
+
+        <section id="emergency">
+            <h3>Emergency Options</h3>
+            <button onclick="callEmergency()">📞 Call Emergency</button>
+            <button onclick="sendSOS()">🚨 Send SOS</button>
+        </section>
+
+        <section id="centers">
+            <h3>Nearby Help Centers</h3>
+            <ul>
+                {% for c in centers %}
+                <li>
+                    <strong>{{ c['Name'] }}</strong> - {{ c['State'] }}<br>
+                    📍 {{ c['Address'] }}<br>
+                    📞 {{ c['Phone'] }}<br>
+                    📝 {{ c['SourceNote'] }}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 DVHL | Designed by Moyo Iyanda</p>
+    </footer>
+
+    <script>
+        function callEmergency() {
+            alert("Dialing emergency number: +2348001234567");
+        }
+
+        function sendSOS() {
+            alert("SOS sent! A nearby center has been notified.");
+        }
+    </script>
+</body>
+</html>
