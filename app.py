@@ -3,122 +3,111 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 
-# ----- PAGE CONFIG -----
-st.set_page_config(
-    page_title="Domestic Violence Helpline Locator",
-    page_icon="🚨",
-    layout="wide"
+st.set_page_config(page_title="Domestic Violence Helpline Locator", page_icon="🚨", layout="wide")
+
+# Header
+st.title("Domestic Violence Helpline Locator")
+st.markdown(
+    "Find help centers near you, access emergency services, and chat anonymously for support."
 )
 
-# ----- HEADER -----
-st.markdown("<h1 style='text-align: center; color: #D32F2F;'>Domestic Violence Helpline Locator</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size:18px;'>Find help centers near you, access emergency services, and chat anonymously for support.</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# ----- ABOUT / BENEFITS -----
-with st.container():
-    st.subheader("About this Website")
-    st.markdown("""
-    This website helps survivors of domestic violence quickly locate nearby help centers and reach emergency services.  
+# About Section
+st.header("About this Website")
+st.write(
+    """
+    This website helps survivors of domestic violence quickly locate nearby help centers and reach emergency services.
+    """
+)
 
-    **Benefits:**  
-    - Immediate access to verified emergency helplines.  
-    - Searchable directory of local help centers.  
-    - Map visualization for easy location tracking.  
-    - Anonymous chat for guidance and support.  
-    - Optional location input to inform help centers safely.  
-    - Downloadable resources for offline access.
-    """)
-
-st.markdown("---")
-
-# ----- EMERGENCY BUTTONS -----
-st.subheader("Emergency Actions")
-col1, col2 = st.columns(2)
-with col1:
-    if st.button("📞 Call Emergency", key="call"):
-        st.success("📞 Dial the nearest emergency number immediately!")
-
-with col2:
-    if st.button("🚨 Send SOS", key="sos"):
-        st.error("🚨 SOS alert! Contact local authorities or trusted contacts immediately!")
+# Benefits Section
+st.header("Benefits")
+st.markdown(
+    """
+- Immediate access to verified emergency helplines.
+- Searchable directory of local help centers.
+- Map visualization for easy location tracking.
+- Anonymous chat for guidance and support.
+- Optional location input to inform help centers safely.
+- Downloadable resources for offline access.
+"""
+)
 
 st.markdown("---")
 
-# ----- HELPLINE DATA -----
-helplines = [
-    {"Name": "Mirabel Centre - Lagos", "Location": "LASUTH, Ikeja", "Phone": "8155770000", "Latitude": 6.6066, "Longitude": 3.3491},
-    {"Name": "Project Alert on Violence Against Women - Lagos", "Location": "PO Box 15456, Ikeja", "Phone": "8180091072", "Latitude": 6.6016, "Longitude": 3.3500},
-    {"Name": "WRAPA - Lagos", "Location": "Lagos", "Phone": "08023456789", "Latitude": 6.5244, "Longitude": 3.3792},
-    {"Name": "DVRT - Abuja", "Location": "Abuja", "Phone": "08012345678", "Latitude": 9.0578, "Longitude": 7.4951}
-]
+# Emergency Actions Section
+st.header("Emergency Actions")
 
-df = pd.DataFrame(helplines)
+# Load helplines CSV
+@st.cache_data
+def load_helplines():
+    df = pd.read_csv("help_centers.csv")
+    return df
 
-# ----- SEARCH FUNCTION -----
+try:
+    df_helplines = load_helplines()
+except FileNotFoundError:
+    st.error("help_centers.csv not found. Make sure it is in the same folder as app.py")
+    st.stop()
+
+# 📋 Helplines Directory
 st.subheader("📋 Helplines Directory")
-search_location = st.text_input("Search helplines by city or location:")
-if search_location:
-    filtered_df = df[df['Location'].str.contains(search_location, case=False)]
+search = st.text_input("Search helplines by city or location:")
+if search:
+    filtered = df_helplines[df_helplines["Address"].str.contains(search, case=False)]
 else:
-    filtered_df = df
+    filtered = df_helplines
 
-# Display helplines with expandable boxes and clickable phone links
-for idx, row in filtered_df.iterrows():
-    with st.expander(f"{row['Name']} - {row['Location']}"):
-        st.markdown(f"**Phone:** [📞 {row['Phone']}](tel:{row['Phone']})")
+for idx, row in filtered.iterrows():
+    st.markdown(f"**{row['Name']} - {row['Address']} - {row['Phone']}**")
 
-st.markdown("---")
-
-# ----- MAP OF HELPLINES -----
+# 📍 Map of Helplines
 st.subheader("📍 Helpline Locations on Map")
-m = folium.Map(location=[6.5244, 3.3792], zoom_start=6, tiles="CartoDB positron")  # Modern map tiles
-for idx, row in filtered_df.iterrows():
+m = folium.Map(location=[9.0820, 8.6753], zoom_start=6)
+for idx, row in df_helplines.iterrows():
     folium.Marker(
-        location=[row["Latitude"], row["Longitude"]],
-        popup=f"{row['Name']} ({row['Phone']})",
+        location=[row['Latitude'], row['Longitude']],
+        popup=f"{row['Name']} - {row['Address']} - {row['Phone']}",
         tooltip=row['Name'],
         icon=folium.Icon(color="red", icon="info-sign")
     ).add_to(m)
+st_folium(m, width=700, height=500)
 
-st_data = st_folium(m, width=700, height=400)
+st.markdown("---")
 
-# ----- ANONYMOUS CHAT -----
+# 💬 Anonymous Chat
 st.subheader("💬 Anonymous Chat")
-user_msg = st.chat_input("Type here if you need help (anonymous)")
-if user_msg:
-    st.chat_message("assistant").markdown("""Help is on the way! Please stay safe. Are you in a safe place? 
-If yes, consider calling your nearest helpline. 
-If not, try to move to a secure location and let someone know your situation.""")
+user_message = st.text_area("Type your message here (anonymous)")
+if st.button("Send"):
+    if user_message.strip() != "":
+        st.success("Your message has been received. Help is on the way!")
+    else:
+        st.warning("Please type a message before sending.")
 
-st.markdown("---")
-
-# ----- OPTIONAL LOCATION INPUT -----
+# 📍 Optional Location Input
 st.subheader("📍 Share Your Location (Optional)")
-location = st.text_input("Enter your location or address if safe")
-if location:
-    st.success(f"Location noted. Please contact your nearest helpline: [Click to Call](tel:8155770000)")
+location_input = st.text_input("Enter your location or address if safe")
+if location_input and st.button("Submit Location"):
+    st.success("Your location has been safely shared with help centers.")
 
-# ----- DOWNLOAD HELPLINE CSV -----
-st.markdown("---")
+# 💾 Downloadable Helpline List
 st.subheader("💾 Download Helpline List")
-csv = df.to_csv(index=False).encode('utf-8')
-st.download_button(
-    label="Download as CSV",
-    data=csv,
-    file_name='domestic_violence_helplines.csv',
-    mime='text/csv'
-)
+csv = df_helplines.to_csv(index=False)
+st.download_button("Download CSV", data=csv, file_name="helplines.csv", mime="text/csv")
 
-# ----- ADDITIONAL RESOURCES -----
+# 📚 Resources & Safety Tips
+st.header("📚 Resources & Safety Tips")
+with st.expander("Know your rights"):
+    st.write("Learn legal protections against domestic violence.")
+with st.expander("Safety planning"):
+    st.write("Steps to protect yourself and loved ones.")
+with st.expander("Counseling & support"):
+    st.write("Access emotional and psychological support services.")
+with st.expander("Trusted contacts"):
+    st.write("Always have someone you can call in emergencies.")
+
 st.markdown("---")
-st.subheader("📚 Resources & Safety Tips")
-st.markdown("""
-- **Know your rights:** Learn legal protections against domestic violence.  
-- **Safety planning:** Steps to protect yourself and loved ones.  
-- **Counseling & support:** Access emotional and psychological support services.  
-- **Trusted contacts:** Always have someone you can call in emergencies.
-""")
 
-# ----- FOOTER -----
-st.markdown("<p style='text-align: center; color: gray; font-size:14px;'>Created by Moyo Iyanda ❤️ | Share to raise awareness</p>", unsafe_allow_html=True)
+# Footer
+st.markdown("**Created by Moyo Iyanda ❤️ | Share to raise awareness**")

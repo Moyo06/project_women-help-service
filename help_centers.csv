@@ -1,13 +1,13 @@
-Name,State,Address,latitude,longitude,Phone,SourceNote
-Mirabel Centre,Lagos,"LASUTH, Ikeja",6.6018,3.3515,8155770000,Verified (Mirabel Centre contact page)
-Project Alert on Violence Against Women,Lagos,"PO Box 15456, Ikeja",6.6,3.35,8180091072,Verified (Project Alert site)
-Women At Risk International Foundation (WARIF),Lagos,"6 Turton St, Yaba",6.5175,3.39,2.34801E+12,Verified (WARIF contact page)
-Dorothy Njemanze Foundation,Abuja,Gaduwa Estate / Abuja office,9.016,7.426,7013333307,Verified (DNF contact info)
-FIDA Nigeria (Intl Federation of Women Lawyers),Abuja,"Room GA15, Federal Ministry of Justice, Maitama",9.064,7.489,2.34709E+12,Verified (FIDA contacts)
-WACOL (Women's Aid Collective),Enugu,"No. 9 Dr Mathias Ilo Ave, Enugu",6.455,7.498,8155850000,Verified (WACOL contacts)
-WRAPA (Women’s Rights Advancement & Protection Alternative),Abuja,"Plot 792 Wuse 2, Abuja",9.058,7.481,8188699961,Verified (WRAPA contact)
-Stand To End Rape (NGO placeholder),National,National helpline,0,0,8095967000,Placeholder - verify exact address/coords
-TAMAR / SARC (Enugu helpline),Enugu,Tamar SARC office,6.44,7.494,9060002128,Source lists SARC helplines (WACOL info)
-Hopeline (Generic Shelter placeholder),Port Harcourt,Local shelter (verify),4.8156,7.0498,8112663348,Placeholder - verify locally
-Women’s Safe House (Ibadan placeholder),Oyo,Ibadan shelter (verify),7.3775,3.947,8012345678,Placeholder - verify locally
-National Domestic Violence Hotline (demo),National,National,0,0,0800-HELP-NG,Demo national hotline (use local verified number)
+Name,,Address,Latitude,Longitude,Phone
+Mirabel Centre,,"LASUTH, Ikeja",6.6018,3.3515,8155770000
+Project Alert on Violence Against Women,,"PO Box 15456, Ikeja",6.6,3.35,8180091072
+Women At Risk International Foundation (WARIF),,"6 Turton St, Yaba",6.5175,3.39,2.35E+12
+Dorothy Njemanze Foundation,,Gaduwa Estate / Abuja office,9.016,7.426,7013333307
+FIDA Nigeria (Intl Federation of Women Lawyers),,"Room GA15, Federal Ministry of Justice, Maitama",9.064,7.489,2.35E+12
+WACOL (Women's Aid Collective),,"No. 9 Dr Mathias Ilo Ave, Enugu",6.455,7.498,8155850000
+WRAPA (Women’s Rights Advancement & Protection Alternative),,"Plot 792 Wuse 2, Abuja",9.058,7.481,8188699961
+Stand To End Rape (NGO placeholder),,National helpline,0,0,8095967000
+TAMAR / SARC (Enugu helpline),,Tamar SARC office,6.44,7.494,9060002128
+Hopeline (Generic Shelter placeholder),,Local shelter (verify),4.8156,7.0498,8112663348
+Women’s Safe House (Ibadan placeholder),,Ibadan shelter (verify),7.3775,3.947,8012345678
+National Domestic Violence Hotline (demo),,National,0,0,0800-HELP-NG
